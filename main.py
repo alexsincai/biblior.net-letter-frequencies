@@ -29,10 +29,32 @@ def read_contents(url, body, removes):
 
 
 def filter_output(string):
+    extras = [
+        "—",
+        " ",
+        "–",
+        "„",
+        "•",
+        "”",
+        "«",
+        "»",
+        "­",
+        "°",
+        "£",
+        "…",
+        "’",
+        "“",
+        "‚",
+        "½",
+        "˝",
+    ]
     return [
         c.lower()
         for c in string
-        if c not in whitespace and c not in punctuation and c not in digits
+        if c not in whitespace
+        and c not in punctuation
+        and c not in digits
+        and c not in extras
     ]
 
 
