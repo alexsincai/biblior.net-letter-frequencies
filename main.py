@@ -2,6 +2,7 @@
 
 from string import whitespace, punctuation, digits
 from typing import Any, List
+from json import dump
 import requests
 from bs4 import BeautifulSoup
 
@@ -100,11 +101,28 @@ def counter(array: List[str]) -> dict:
     """
     output = {}
 
-    for character in array:
+    for index, character in enumerate(array):
+        char = character
+
+        if index < len(array) - 1 and array[index + 1] in "ei":
+            if character in "cC":
+                char = "ç"
+            elif character in "gG":
+                char = "ģ"
+
+        if character in "şșŞȘ":
+            char = "ş"
+
+        if character in "ţțŢȚ":
+            char = "ţ"
+
+        if character in "îâÎÂ":
+            char = "î"
+
         try:
-            output[character] += 1
+            output[char] += 1
         except KeyError:
-            output[character] = 1
+            output[char] = 1
 
     return output
 
@@ -175,7 +193,8 @@ def main():
     )
 
     # The program's output
-    print(output)
+    with open("output.json", mode="w", encoding="utf8") as file:
+        dump(obj=output, fp=file, indent=2, ensure_ascii=False)
 
 
 if __name__ == "__main__":
